@@ -1,0 +1,57 @@
+name: Test Github actions
+on:
+  push:
+  schedule:
+    #        ┌───────────── minute (0 - 59)
+    #        │ ┌───────────── hour (0 - 23)
+    #        │ │ ┌───────────── day of the month (1 - 31)
+    #        │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #        │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #        │ │ │ │ │
+    #        │ │ │ │ │
+    #        │ │ │ │ │
+    #        * * * * *
+    - cron: '0 0 1 * *'
+
+jobs:
+
+  # Run LaTeX action tests
+  test-latex-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up repository
+        uses: actions/checkout@v3
+
+      - name: Compile basic LaTeX document
+        uses: ./latex-action
+        with:
+          main_file: test_basic.tex
+          working_directory: ./latex-action/test/
+
+      - name: Compile basic LaTeX document with lualatex
+        uses: ./latex-action
+        with:
+          main_file: test_basic.tex
+          working_directory: ./latex-action/test/
+          compiler: lualatex
+          compiler_options: -file-line-error -interaction=nonstopmode
+
+      - name: Compile LaTeX document with math symbols
+        uses: ./latex-action
+        with:
+          main_file: test_maths.tex
+          working_directory: ./latex-action/test/
+
+      - name: Compile LaTeX document with biblatex/biber
+        uses: ./latex-action
+        with:
+          main_file: test_biblatex.tex
+          working_directory: ./latex-action/test/
+          
+      - name: Check generated documents
+        run: |
+          set -e
+          file ./latex-action/test/test_basic.pdf | grep -q ' PDF '
+          file ./latex-action/test/test_maths.pdf | grep -q ' PDF '
+          file ./latex-action/test/test_biblatex.pdf | grep -q ' PDF '
