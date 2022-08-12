@@ -1,6 +1,6 @@
 # LaTex Action
 
-This Docker container action aims at preparing a LaTeX document. It uses the [`latex-sandbox`]() Docker image to build the 
+This Docker container action aims at preparing a LaTeX document. It uses the [`latex`](https://github.com/AutonomyOrg/docker-images/tree/main/latex) Docker image to build the 
 Docker container in which the LaTeX engine is executed to build the final document.
 
 ## Inputs
@@ -23,12 +23,12 @@ None
 The sample workflow below shows how to use this action.
 
 ```yaml
-name: Build and release LaTeX document
+name: Build LaTeX document
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 jobs:
 
@@ -47,5 +47,5 @@ jobs:
 
 ## Credits
 
-https://github.com/xu-cheng/latex-action
-https://github.com/dante-ev/latex-action
+- https://github.com/xu-cheng/latex-action
+- https://github.com/dante-ev/latex-action
