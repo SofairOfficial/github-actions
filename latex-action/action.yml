@@ -10,12 +10,14 @@ inputs:
     required: true
   working_directory:
     description: The working directory for the LaTeX compiler to be invoked
+    default: "."
   compiler:
     description: LaTeX engine to be used
     default: latexmk
   compiler_options:
-    description: Extra arguments to be passed to the latex compiler
-    default: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode"
+    description: Extra arguments to be passed to the LaTeX compiler
+    default: "-lualatex -file-line-error -halt-on-error -interaction=nonstopmode -shell-escape"
+
 runs:
   using: docker
   image: Dockerfile
