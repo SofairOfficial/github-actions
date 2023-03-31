@@ -5,6 +5,9 @@ inputs:
   github-token:
     description: 'GitHub authentication token'
     required: true
+  pull-request-number:
+    description: 'GitHub pull request number to verify'
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'

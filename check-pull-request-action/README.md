@@ -1,6 +1,8 @@
 # Check pull request format action
 
 This GitHub Actions script (or action) aims at checking that a pull request is well-formed before being merged to the main branch of a repository.
+This also aims to verify the message of the commits inside the pull-request (called inner-commits) is well formed for the semantic-
+release tool.
 
 It particularly targets repositories using the squash and merge commit strategy to keep their commit history clean and readable.
 
@@ -12,13 +14,23 @@ Modify the data model (#13)
 
 where the block `(#13)`, and particularly the number `13`, is the index of the pull request containing the commits that were squashed and merged.
 
+The format of inner-commit's message is as follows:
+
+```text
+type(scope): something changed
+```
+
+Where `type` is mandatory and picked from a list defined in the contributor's guide, `scope` is not mandatory and refers to the
+scope the commit changed.
+
 ## Input parameters
 
 The following input parameters
 
 | Parameter      | Description                                     | Mandatory | Default |
 | -------------- | ----------------------------------------------- | --------- | ------- |
-| `github_token` | GitHub token for accessing GitHub repositories. | Yes       | None    |
+| `github-token` | GitHub token for accessing GitHub repositories. | Yes       | None    |
+| `pull-request-number` | GitHub pull request number to verify. | Yes | None |
 
 ## Output parameters
 
