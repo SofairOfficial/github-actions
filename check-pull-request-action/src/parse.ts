@@ -38,7 +38,7 @@ export function parsePullMessage(subject: String): boolean {
  */
 export function parseCommitMessage(message: String): boolean {
   const regex =
-    /^(break|build|ci|docs|feat|fix|perf|refac|sec|style|test){1}(?<scope>\(\S.*\S\))?:\s.*[a-z]$/
+    /^(break|build|ci|docs|feat|fix|perf|refac|sec|style|test){1}(?<scope>\(\S.*\S\))?:\s.*[a-z0-9]$/
   const matches = message.toString().match(regex)
 
   return matches != null

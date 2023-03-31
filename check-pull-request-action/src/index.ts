@@ -18,7 +18,7 @@ async function run(): Promise<void> {
     const result = parsePullMessage(title)
     if (!result) {
       throw new Error(
-        'The pull request subject is malformed. It must be of the form "Valid message starts with a capital and has a pull request reference like (#10)"'
+        'The pull request subject is malformed. It must be of the form "Starts with a capital and has a pull request reference like (#10)".'
       )
     }
 
@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     for (const x of commits) {
       if (!parseCommitMessage(x)) {
         throw new Error(
-          'The commit message is malformed. It must be of the form "type(scope): explain the main goal"'
+          `The commit message is malformed. It must be of the form "type(scope): explain the main goal". The wrong message is "${x}".`
         )
       }
     }

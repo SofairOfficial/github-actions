@@ -56,13 +56,13 @@ function run() {
             const title = yield getPullTitle(octokit, prNumber);
             const result = (0, parse_1.parsePullMessage)(title);
             if (!result) {
-                throw new Error('The pull request subject is malformed. It must be of the form "Valid message starts with a capital and has a pull request reference like (#10)"');
+                throw new Error('The pull request subject is malformed. It must be of the form "Starts with a capital and has a pull request reference like (#10)".');
             }
             //Get the inner commit message and analyze them
             const commits = yield getCommitMessage(octokit, prNumber);
             for (const x of commits) {
                 if (!(0, parse_1.parseCommitMessage)(x)) {
-                    throw new Error('The commit message is malformed. It must be of the form "type(scope): explain the main goal"');
+                    throw new Error(`The commit message is malformed. It must be of the form "type(scope): explain the main goal". The wrong message is "${x}".`);
                 }
             }
         }
@@ -98,30 +98,20 @@ function getCommitMessage(octokit, num) {
         return commits;
     });
 }
-//function to get the pull request's number
+// Function to get the pull request's number
 function getPullNumber(num) {
-    var _a, _b;
-    let pull_number = 0;
-    if (((_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number) !== undefined) {
-        pull_number = (_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number;
-    }
-    else {
-        throw new Error('No pull number found.');
-    }
-    core.debug(`PR number: ${pull_number} or ${num}`);
-    pull_number = Number(num);
-    return pull_number;
+    return Number(num);
 }
 // Function to get the owner of the working repository
 function getOwner() {
     return github.context.repo.owner;
 }
-// Function to get the name of the working reposiroty
+// Function to get the name of the working repository
 function getRepo() {
     return github.context.repo.repo;
 }
-// Function to get the context of the working repository : the owner and the name of the working repository and the
-// pull request's number
+// Function to get the context of the working repository : the owner and the name of the working
+//repository and the pull request's number
 function getContext(num) {
     return { owner: getOwner(), repo: getRepo(), pull_number: getPullNumber(num) };
 }
@@ -175,7 +165,7 @@ exports.parsePullMessage = parsePullMessage;
  * @return {boolean} Return {true} if the commit's message is well-formed or {false} otherwise.
  */
 function parseCommitMessage(message) {
-    const regex = /^(break|build|ci|docs|feat|fix|perf|refac|sec|style|test){1}(?<scope>\(\S.*\S\))?:\s.*[a-z]$/;
+    const regex = /^(break|build|ci|docs|feat|fix|perf|refac|sec|style|test){1}(?<scope>\(\S.*\S\))?:\s.*[a-z0-9]$/;
     const matches = message.toString().match(regex);
     return matches != null;
 }
