@@ -1,0 +1,13 @@
+name: 'check-pull-request'
+description: 'Check that a pull request is well-formed when opened'
+author: 'Sofair Contributors <hello@sofair.io>'
+inputs:
+  github-token:
+    description: 'GitHub authentication token'
+    required: true
+  pull-request-number:
+    description: 'GitHub pull request number to verify'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

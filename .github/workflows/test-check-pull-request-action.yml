@@ -1,0 +1,35 @@
+# Workflow used for testing the 'check-pull-request-action' action.
+#
+# A way to run this workflow locally is by using the Act tool (see https://github.com/nektos/act),
+# using the following command when at the root of this repository:
+#
+# act -s GITHUB_TOKEN=[Your_Personal_Github_Token] pull_request_target
+
+name: Testing 'check-pull-request-action'
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    name: Test action
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./check-pull-request-action
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build action bundle
+        run: npm run all
+
+      - name: Execute action
+        uses: ./check-pull-request-action
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
